@@ -1,20 +1,33 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, read, readFileSync, write, writeFileSync } from "node:fs";
 import { randomUUID, createHash } from "node:crypto";
-import { dotenv } from "node:dotenv";
+//import { dotenv } from "node:dotenv";
+import { error } from "node:console";
+import { type } from "node:os";
 import { handleError } from "./utils/handleError.js";
 
 //Recuperar variables de entorno !!
+const PATH_FILE = process.env.PATH_FILE;
 
-//Métodos:
-
-const getUsers = () => {
+const getUsers = (urlFile) => {
   try {
+    if (!urlFile) {
+      throw new Error("Access denied");
+    }
+    const exists = existsSync(PATH_FILE);
+    if (!exists) {
+      writeFileSync(PATH_FILE, JSON.stringify([]));
+      return [];
+    }
+    const users = JSON.parse(readFileSync(PATH_FILE));
+    return users;
   } catch (error) {
-    //const objError = handleError();
-    //return objError;
+    const errorPathFile = "./error/log.json";
+    handleError(error, errorPathFile);
+    return error.message;
   }
 };
 
+/*
 const getUserByID = () => {
   try {
   } catch (error) {}
@@ -43,5 +56,6 @@ const deleteUser = (id) => {
   try {
   } catch (error) {}
 };
+*/
 
-export { getUsers, getUserByID, addUser, deleteUser };
+//export { getUsers, getUserByID, addUser, deleteUser };
