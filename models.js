@@ -1,38 +1,52 @@
 import { existsSync, read, readFileSync, write, writeFileSync } from "node:fs";
 import { randomUUID, createHash } from "node:crypto";
-//import { dotenv } from "node:dotenv";
-import { error } from "node:console";
-import { type } from "node:os";
+import dotenv from "dotenv";
 import { handleError } from "./utils/handleError.js";
 
-//Recuperar variables de entorno !!
-const PATH_FILE = process.env.PATH_FILE;
+dotenv.config();
+const PATH_FILE_USER = process.env.PATH_FILE_USER;
+const PATH_FILE_ERROR = process.env.PATH_FILE_ERROR;
 
 const getUsers = (urlFile) => {
   try {
     if (!urlFile) {
       throw new Error("Access denied");
     }
-    const exists = existsSync(PATH_FILE);
+    const exists = existsSync(urlFile);
     if (!exists) {
-      writeFileSync(PATH_FILE, JSON.stringify([]));
+      writeFileSync(urlFile, JSON.stringify([]));
       return [];
     }
-    const users = JSON.parse(readFileSync(PATH_FILE));
+    const users = JSON.parse(readFileSync(urlFile));
     return users;
   } catch (error) {
-    const errorPathFile = "./error/log.json";
-    handleError(error, errorPathFile);
-    return error.message;
+    const objError = handleError(error, PATH_FILE_ERROR);
+    return objError;
   }
 };
 
-/*
-const getUserByID = () => {
+const getUserByID = (id) => {
   try {
-  } catch (error) {}
+    if (!id) {
+      throw new Error("Id is missing");
+    }
+    const users = getUsers(PATH_FILE_USER);
+    const user = users.find((user) => user.id === id);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+    return user;
+  } catch (error) {
+    const objError = handleError(error, PATH_FILE_ERROR);
+    return objError;
+  }
 };
 
+const res = getUserByID();
+console.log(res);
+
+/*
 //Recibe un objeto con toda la data para el nuevo usuario.
 //Valida que estén los datos mínimos para añadir un usuario.
 //Valida que el nombre sea un string
