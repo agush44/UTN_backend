@@ -2,6 +2,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { randomUUID, createHash } from "node:crypto";
 import dotenv from "dotenv";
 import { handleError } from "./utils/handleError.js";
+import bcrypt from "bcrypt";
 
 dotenv.config();
 const PATH_FILE_USER = process.env.PATH_FILE_USER;
@@ -43,7 +44,7 @@ const getUserByID = (id) => {
   }
 };
 
-const addUser = (userData) => {
+const addUser = async (userData) => {
   try {
     const { name, lastName, email, password } = userData;
 
@@ -67,7 +68,7 @@ const addUser = (userData) => {
       throw new Error("Invalid data: email is already registered");
     }
 
-    const hash = createHash("sha256").update(password).digest("hex");
+    const hash = await bcrypt.hash(password, 10);
 
     const newUser = {
       id: randomUUID(),
@@ -105,4 +106,4 @@ const deleteUser = (id) => {
 
 */
 
-export { getUsers, getUserByID, addUser, deleteUser };
+export { getUsers, getUserByID, addUser };
