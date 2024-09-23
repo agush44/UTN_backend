@@ -1,5 +1,5 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { randomUUID, createHash } from "node:crypto";
+import { randomUUID } from "node:crypto";
 import dotenv from "dotenv";
 import { handleError } from "./utils/handleError.js";
 import bcrypt from "bcrypt";
@@ -8,6 +8,7 @@ dotenv.config();
 const PATH_FILE_USER = process.env.PATH_FILE_USER;
 const PATH_FILE_ERROR = process.env.PATH_FILE_ERROR;
 
+//Muestra los usuarios
 const getUsers = (urlFile) => {
   try {
     if (!urlFile) {
@@ -26,24 +27,26 @@ const getUsers = (urlFile) => {
   }
 };
 
+//Muestra usuario por ID
 const getUserByID = (id) => {
   try {
     if (!id) {
       throw new Error("Id is missing");
     }
     const users = getUsers(PATH_FILE_USER);
-    const user = users.find((user) => user.id === id);
+    const foundUser = users.find((user) => user.id === id);
 
-    if (!user) {
+    if (!foundUser) {
       throw new Error("User not found");
     }
-    return user;
+    return foundUser;
   } catch (error) {
     const objError = handleError(error, PATH_FILE_ERROR);
     return objError;
   }
 };
 
+//Agrega usuario
 const addUser = async (userData) => {
   try {
     const { name, lastName, email, password } = userData;
@@ -78,6 +81,7 @@ const addUser = async (userData) => {
       password: hash,
       isLoggedIn: false,
       createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
     users.push(newUser);
@@ -90,20 +94,60 @@ const addUser = async (userData) => {
   }
 };
 
-/*
-//Todos los datos del usuario pueden ser modificados menos el ID
-//Si se modifica la pass debería ser nuevamente hasheada
-//Si se modifica el mail, validar que no exista
-const updateUser = (userData) => {  
+//Actualiza usuario
+const updateUser = async (userData) => {
   try {
-  } catch (error) {}
+    const { id, name, lastName, email, password } = userData;
+    if (!id) {
+      throw new Error("Id is missing");
+    }
+
+    const users = getUsers(PATH_FILE_USER);
+    const userIndex = users.findIndex((user) => user.id === id);
+
+    if (userIndex === -1) {
+      throw new Error("User not found");
+    }
+
+    const foundUser = users[userIndex];
+
+    if (email && email !== foundUser.email) {
+      const existingEMail = users.find((user) => user.email === email);
+      if (existingEMail) {
+        throw new Error("Invalid data: Email is already registered.");
+      }
+      foundUser.email = email;
+    }
+
+    if (name && typeof name === "string") {
+      foundUser.name = name;
+    }
+
+    if (lastName && typeof lastName === "string") {
+      foundUser.lastName = lastName;
+    }
+
+    if (password && typeof password === "string") {
+      const hash = await bcrypt.hash(password, 10);
+      foundUser.password = hash;
+    }
+
+    foundUser.updatedAt = new Date().toISOString();
+    users[userIndex] = foundUser;
+
+    writeFileSync(PATH_FILE_USER, JSON.stringify(users));
+
+    return foundUser;
+  } catch (error) {
+    const objError = handleError(error, PATH_FILE_ERROR);
+    return objError;
+  }
 };
 
+//Elimina usuario
 const deleteUser = (id) => {
   try {
   } catch (error) {}
 };
 
-*/
-
-export { getUsers, getUserByID, addUser };
+export { getUsers, getUserByID, addUser, deleteUser };
