@@ -162,4 +162,4 @@ const deleteUser = (id) => {
   }
 };
 
-export { getUsers, getUserByID, addUser, deleteUser };
+export { getUsers, getUserByID, addUser, updateUser, deleteUser };
