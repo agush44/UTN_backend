@@ -147,7 +147,19 @@ const updateUser = async (userData) => {
 //Elimina usuario
 const deleteUser = (id) => {
   try {
-  } catch (error) {}
+    if (!id) {
+      throw new Error("Id is missing");
+    }
+
+    const users = getUsers(PATH_FILE_USER);
+    const user = getUserByID(id);
+    const usersModified = users.filter((user) => user.id !== id);
+    writeFileSync(PATH_FILE_USER, JSON.stringify(usersModified));
+    return user;
+  } catch (error) {
+    const objError = handleError(error, PATH_FILE_ERROR);
+    return objError;
+  }
 };
 
 export { getUsers, getUserByID, addUser, deleteUser };
