@@ -5,6 +5,13 @@ const now = new Date();
 const dateString = now.toLocaleDateString();
 const timeString = now.toLocaleTimeString();
 
+/**
+ * Maneja los errores y los registra en un archivo de logs.
+ *
+ * @param {Error} error - El objeto de error que se desea manejar.
+ * @param {string} path - La ruta del archivo donde se almacenan los logs de errores.
+ * @returns {Object} - Un nuevo objeto de error que se ha registrado.
+ */
 const handleError = (error, path) => {
   const dbError = JSON.parse(readFileSync(path));
   const newError = {

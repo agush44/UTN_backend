@@ -1,11 +1,11 @@
 {
-  "name": "tp1",
+  "name": "tp1-utn",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "scripts": {},
   "keywords": [],
-  "author": "",
+  "author": "Ma. Agustina Benitez",
   "license": "ISC",
   "description": "",
   "dependencies": {
