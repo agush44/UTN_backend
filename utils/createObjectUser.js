@@ -1,13 +1,11 @@
-//Obtener los args pasados por terminal (que vienen del index)
-//Desarrollar las funciones que crean los objetos para añadir un usuario y actualizar un usuario
-//Aplicar control de errores entorno a las posibilidades de que surja uno
 import { handleError } from "./handleError.js";
 import dotenv from "dotenv";
 
+// Carga las variables de entorno desde el archivo .env
 dotenv.config();
-const PATH_FILE_USER = process.env.PATH_FILE_USER;
 const PATH_FILE_ERROR = process.env.PATH_FILE_ERROR;
 
+// Función para crear un objeto de usuario a partir de argumentos de entrada
 const createUserObject = (args) => {
   try {
     const [name, lastName, email, password] = args.slice(1);
@@ -27,6 +25,7 @@ const createUserObject = (args) => {
   }
 };
 
+// Función para crear un objeto de usuario actualizado a partir de argumentos de entrada
 const createUpdateUserObject = (args) => {
   try {
     const [id, name, lastName, email, password] = args.slice(1);

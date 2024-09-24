@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { handleError } from "./utils/handleError.js";
 import bcrypt from "bcrypt";
 
+// Carga las variables de entorno desde el archivo .env
 dotenv.config();
 const PATH_FILE_USER = process.env.PATH_FILE_USER;
 const PATH_FILE_ERROR = process.env.PATH_FILE_ERROR;
@@ -162,6 +163,7 @@ const deleteUser = (id) => {
   }
 };
 
+//Muestra el menú de ayuda
 const showHelp = () => {
   console.log(`
     Available commands:
