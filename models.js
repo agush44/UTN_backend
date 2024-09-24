@@ -112,6 +112,19 @@ const updateUser = async (userData) => {
 
     const foundUser = users[userIndex];
 
+    if (!name || typeof name !== "string") {
+      throw new Error("Name is required and must be a string.");
+    }
+    if (!lastName || typeof lastName !== "string") {
+      throw new Error("Last name is required and must be a string.");
+    }
+    if (!email || typeof email !== "string" || !email.includes("@")) {
+      throw new Error("Email is required, must be a string.");
+    }
+    if (!password || typeof password !== "string") {
+      throw new Error("Password is required and must be a string.");
+    }
+
     if (email && email !== foundUser.email) {
       const existingEMail = users.find((user) => user.email === email);
       if (existingEMail) {
