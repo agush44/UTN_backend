@@ -52,7 +52,7 @@ Este proyecto es una CLI (Command Line Interface) para gestionar usuarios. Permi
 
 4. **Actualizar un usuario** (`update`):
 
-   - Actualiza los datos de un usuario por su `ID`. Si algún campo no se pasa como argumento, permanecerá sin cambios.
+   - Permite modificar los datos de un usuario (nombre, apellido, email o password). El id no puede cambiar. Si se proporciona una nueva contraseña, será hasheada.
    - Los campos que puedes actualizar son: `name`, `lastName`, `email` y `password`.
 
    **Uso**:
