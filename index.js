@@ -4,17 +4,20 @@ import {
   addUser,
   updateUser,
   deleteUser,
+  showHelp,
 } from "./models.js";
 import dotenv from "dotenv";
-import { handleError } from "./utils/handleError.js";
 import { createUserObject } from "./utils/createObjectUser.js";
 import { createUpdateUserObject } from "./utils/createObjectUser.js";
 
 dotenv.config();
 const PATH_FILE_USER = process.env.PATH_FILE_USER;
-const PATH_FILE_ERROR = process.env.PATH_FILE_ERROR;
 
 const args = process.argv.splice(2);
+
+if (args.length === 0) {
+  console.log("No command provided. Use 'help' for available commands.");
+}
 const action = args[0];
 
 switch (action) {
@@ -35,9 +38,12 @@ switch (action) {
   case "delete":
     console.log(deleteUser(args[1]));
     break;
+  case "help":
+    showHelp();
+    break;
   default:
     console.log(
-      "Invalid action. Use 'list', 'get', 'add', 'update', or 'delete'."
+      "Invalid action. Use 'list', 'get', 'add', 'update', 'delete' or 'help'."
     );
     break;
 }

@@ -162,4 +162,15 @@ const deleteUser = (id) => {
   }
 };
 
-export { getUsers, getUserByID, addUser, updateUser, deleteUser };
+const showHelp = () => {
+  console.log(`
+    Available commands:
+  - add <name> <lastName> <email> <password> : Add a new user
+  - list : List all users
+  - get <id> : Get user by ID
+  - update <id> <name?> <lastName?> <email?> <password?> : Update user by ID
+  - delete <id> : Delete user by ID
+    `);
+};
+
+export { getUsers, getUserByID, addUser, updateUser, deleteUser, showHelp };
