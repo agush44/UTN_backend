@@ -137,7 +137,7 @@ Este proyecto es una CLI (Command Line Interface) para gestionar usuarios. Permi
      ```json
      []
      ```
-   - Opcionalmente, crea el archivo de errores `errors.log` si deseas registrar errores.
+   - Crea el archivo de errores `errors.log` si deseas registrar errores.
 
 ## Ejecución
 
